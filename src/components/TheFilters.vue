@@ -6,7 +6,7 @@
         class="inline-block w-96 bg-brand-white-1 shadow-dark"
       >
         <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
-        <input type="text" id="search-country" />
+        <input id="search-country" type="text" />
       </label>
     </div>
     <div></div>
