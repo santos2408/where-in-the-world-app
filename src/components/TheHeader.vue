@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex h-20 items-center justify-between bg-brand-white-1 px-20 shadow-dark transition ease-in dark:bg-brand-dark-1"
+    class="lef-0 fixed top-0 flex h-20 w-full items-center justify-between bg-brand-white-1 px-20 shadow-dark-1 transition ease-in dark:bg-brand-dark-1"
   >
     <h1 class="text-2xl font-bold text-brand-black-1 dark:text-brand-white-1">
       Where in the world?

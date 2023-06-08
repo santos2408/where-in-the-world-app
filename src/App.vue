@@ -1,4 +1,4 @@
-<template>
+<template class="text-2xl">
   <the-header />
   <main-section />
 </template>

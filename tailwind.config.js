@@ -11,13 +11,20 @@ module.exports = {
       colors: {
         "brand-white-1": "#fff",
         "brand-white-2": "#fafafa",
+        "brand-gray-1": "#828282",
+        "brand-gray-2": "#f2f2f2",
         "brand-black-1": "#323232",
         "brand-dark-1": "#2b3743",
         "brand-dark-2": "#202d36",
+        "brand-dark-3": "#394858",
       },
       boxShadow: {
-        dark: "0 4px 6px rgba(0, 0, 0, 0.08)",
+        "dark-1": "0 4px 6px rgba(0, 0, 0, 0.08)",
+        "dark-2": "4px 4px 6px rgba(0, 0, 0, 0.08)",
       },
+      spacing: {
+        "120": "30rem",
+      }
     },
   },
   darkMode: "class",

@@ -5,8 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faMoon, faMagnifyingGlass, faSun);
+library.add(faMoon, faMagnifyingGlass, faSun, faAngleDown);
 
 import '@/index.css';
 import App from '@/App.vue';
