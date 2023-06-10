@@ -1,18 +1,25 @@
 <template>
   <main
-    class="min-h-screen bg-brand-white-2 px-20 pt-32 transition ease-in dark:bg-brand-dark-2"
+    class="w- min-h-screen bg-brand-white-2 px-20 pt-32 transition ease-in dark:bg-brand-dark-2"
   >
-    <the-filters />
+    <section class="flex items-center justify-between">
+      <search-input />
+      <location-filter />
+    </section>
+
+    <section></section>
   </main>
 </template>
 
 <script>
-import TheFilters from "@/components/TheFilters.vue";
+import SearchInput from "@/components/SearchInput.vue";
+import LocationFilter from "@/components/LocationFilter.vue";
 
 export default {
   name: "MainSection",
   components: {
-    TheFilters,
+    LocationFilter,
+    SearchInput,
   },
 };
 </script>
