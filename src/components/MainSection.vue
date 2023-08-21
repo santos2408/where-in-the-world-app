@@ -10,12 +10,8 @@
     <section class="grid grid-cols-5 gap-16">
       <country-card
         v-for="country in countries"
-        :key="country"
-        :country="country.name.common"
-        :population="country.population"
-        :region="country.region"
-        :capital="country.capital"
-        :sigle="country.cca2"
+        :key="country.name.common"
+        :country="country"
       />
     </section>
   </main>
@@ -35,15 +31,22 @@ export default {
   },
   data() {
     return {
+      url: "https://restcountries.com/v3.1/all",
       countries: [],
     };
   },
-  created() {
-    fetch("https://restcountries.com/v3.1/all")
-      .then((response) => response.json())
-      .then((countries) => {
-        this.countries = countries;
-      });
+  async created() {
+    try {
+      const response = await fetch(this.url);
+
+      if (!response.ok) {
+        throw new Error("There was not possible get information about the countries.");
+      }
+
+      this.countries = await response.json();
+    } catch ({ error, message }) {
+      console.log(`${error}: ${message}`);
+    }
   },
 };
 </script>
