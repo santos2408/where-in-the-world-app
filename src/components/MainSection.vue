@@ -1,13 +1,17 @@
 <template>
   <main
-    class="w- min-h-screen bg-brand-white-2 px-20 pt-32 transition ease-in dark:bg-brand-dark-2"
+    class="min-h-screen w-full bg-brand-white-2 px-6 pt-32 transition ease-in dark:bg-brand-dark-2 md:px-20"
   >
-    <section class="mb-12 flex items-center justify-between">
+    <section
+      class="mb-12 flex flex-col items-center justify-between gap-5 md:flex-row md:gap-6 lg:gap-0"
+    >
       <search-input />
       <location-filter />
     </section>
 
-    <section class="grid grid-cols-5 gap-16">
+    <section
+      class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+    >
       <country-card
         v-for="country in countries"
         :key="country.name.common"

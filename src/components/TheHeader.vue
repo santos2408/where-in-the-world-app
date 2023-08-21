@@ -1,6 +1,6 @@
 <template>
   <header
-    class="lef-0 fixed top-0 flex h-20 w-full items-center justify-between bg-brand-white-1 px-20 shadow-dark-1 transition ease-in dark:bg-brand-dark-1"
+    class="lef-0 fixed top-0 z-10 flex h-20 w-full items-center justify-between bg-brand-white-1 px-6 shadow-dark-1 transition ease-in dark:bg-brand-dark-1 md:px-20"
   >
     <h1 class="text-2xl font-bold text-brand-black-1 dark:text-brand-white-1">
       Where in the world?
@@ -11,7 +11,7 @@
     >
       <font-awesome-icon v-if="theme" :icon="['fas', 'sun']" />
       <font-awesome-icon v-else :icon="['fas', 'moon']" />
-      {{ currentTheme }}
+      {{ handleThemeNameVisibility }}
     </button>
   </header>
 </template>
@@ -21,12 +21,16 @@ export default {
   name: "TheHeader",
   data() {
     return {
+      isMobile: null,
       theme: null,
     };
   },
   computed: {
     currentTheme() {
       return this.theme ? "Light Mode" : "Dark Mode";
+    },
+    handleThemeNameVisibility() {
+      return this.isMobile ? "" : this.currentTheme;
     },
   },
 
@@ -42,6 +46,14 @@ export default {
     }
 
     document.documentElement.classList.remove("dark");
+  },
+
+  mounted() {
+    this.isMobile = window.innerWidth <= 600 ? true : false;
+
+    window.addEventListener("resize", () => {
+      this.isMobile = window.innerWidth <= 600 ? true : false;
+    });
   },
 
   methods: {
