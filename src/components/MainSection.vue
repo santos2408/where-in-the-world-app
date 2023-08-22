@@ -20,11 +20,24 @@
         :country-color="countriesColors[index]"
       />
     </section>
+
+    <section
+      v-else
+      class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+    >
+      <content-loader v-for="n in 10" :key="n" viewBox="0 0 200 285" :speed="2">
+        <rect x="0" y="3" rx="10" ry="10" width="195" height="140" />
+        <rect x="5" y="160" rx="0" ry="0" width="180" height="15" />
+        <rect x="5" y="185" rx="0" ry="0" width="154" height="15" />
+        <rect x="5" y="210" rx="0" ry="0" width="180" height="15" />
+      </content-loader>
+    </section>
   </main>
 </template>
 
 <script>
 import ColorThief from "/node_modules/colorthief/dist/color-thief.mjs";
+import { ContentLoader } from "vue-content-loader";
 
 import SearchInput from "@/components/SearchInput.vue";
 import LocationFilter from "@/components/LocationFilter.vue";
@@ -36,6 +49,7 @@ export default {
     LocationFilter,
     SearchInput,
     CountryCard,
+    ContentLoader,
   },
   data() {
     return {
