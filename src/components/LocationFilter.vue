@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative z-10">
     <div
       class="relative flex h-14 w-60 cursor-pointer items-center justify-between gap-14 rounded bg-brand-white-1 px-6 text-brand-gray-1 shadow-dark-2 transition dark:bg-brand-dark-1 dark:text-brand-white-1"
       @click="handleFilterRegionsVisibility"

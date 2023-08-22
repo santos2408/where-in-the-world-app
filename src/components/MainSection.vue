@@ -10,18 +10,22 @@
     </section>
 
     <section
+      v-if="countriesAndColorsReady"
       class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
     >
       <country-card
-        v-for="country in countries"
+        v-for="(country, index) in countries"
         :key="country.name.common"
         :country="country"
+        :country-color="countriesColors[index]"
       />
     </section>
   </main>
 </template>
 
 <script>
+import ColorThief from "/node_modules/colorthief/dist/color-thief.mjs";
+
 import SearchInput from "@/components/SearchInput.vue";
 import LocationFilter from "@/components/LocationFilter.vue";
 import CountryCard from "@/components/CountryCard.vue";
@@ -37,6 +41,8 @@ export default {
     return {
       url: "https://restcountries.com/v3.1/all",
       countries: [],
+      countriesColors: [],
+      countriesAndColorsReady: false,
     };
   },
   async created() {
@@ -48,9 +54,30 @@ export default {
       }
 
       this.countries = await response.json();
+
+      const allPromises = this.countries.map((country) =>
+        this.getDominantImageColor(country.flags.png),
+      );
+
+      this.countriesColors = await Promise.all(allPromises);
+      this.countriesAndColorsReady = true;
     } catch ({ error, message }) {
-      console.log(`${error}: ${message}`);
+      alert(`${error}: ${message}`);
     }
+  },
+  methods: {
+    async getDominantImageColor(imageUrl) {
+      return new Promise((resolve, reject) => {
+        const colorThief = new ColorThief();
+        const image = new Image();
+
+        image.src = imageUrl;
+        image.crossOrigin = "Anonymous";
+
+        image.onload = () => resolve(colorThief.getColor(image));
+        image.oneeror = () => reject();
+      });
+    },
   },
 };
 </script>
