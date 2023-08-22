@@ -1,8 +1,8 @@
 <template>
-  <div class="overflow-hidden rounded bg-brand-white-1 shadow-dark-2">
+  <div class="overflow-hidden rounded bg-white shadow-dark-2">
     <figure
-      class="flex h-60 items-center justify-center"
-      :style="{ backgroundColor: `rgb(${countryColor.join(',')})` }"
+      class="flex h-60 items-center justify-center p-6"
+      :style="backgroundStyleCountry"
     >
       <img
         class="max-h-52 w-64 border-2 border-white object-cover drop-shadow-lg backdrop-blur"
@@ -10,7 +10,7 @@
         :alt="country.name.common"
       />
     </figure>
-    <div class="p-6">
+    <div class="bg-brand-white-1 p-6">
       <h2 class="mb-6 text-lg font-bold">{{ country.name.common }}</h2>
       <ul class="space-y-1">
         <li><span class="font-semibold">Population</span>: {{ country.population }}</li>
@@ -36,6 +36,9 @@ export default {
   computed: {
     formattedCountryCapital() {
       return this.country.capital ? this.country.capital[0] : "Unkown";
+    },
+    backgroundStyleCountry() {
+      return { backgroundColor: `rgb(${this.countryColor.join(",")}, 0.5)` };
     },
   },
 };
