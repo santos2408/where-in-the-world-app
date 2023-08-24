@@ -1,9 +1,6 @@
 <template>
   <div class="overflow-hidden rounded bg-white shadow-dark-2">
-    <figure
-      class="flex h-60 items-center justify-center p-6"
-      :style="backgroundStyleCountry"
-    >
+    <figure class="flex h-60 items-center justify-center p-6" :style="backgroundStyleCountry">
       <img
         class="max-h-52 w-64 border-2 border-white object-cover drop-shadow-lg backdrop-blur"
         :src="country.flags.svg"

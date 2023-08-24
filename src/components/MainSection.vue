@@ -36,20 +36,20 @@
 </template>
 
 <script>
-import ColorThief from "/node_modules/colorthief/dist/color-thief.mjs";
-import { ContentLoader } from "vue-content-loader";
+import getCountries from "@/api/getCountries.js";
 
-import SearchInput from "@/components/SearchInput.vue";
-import LocationFilter from "@/components/LocationFilter.vue";
+import { ContentLoader } from "vue-content-loader";
 import CountryCard from "@/components/CountryCard.vue";
+import LocationFilter from "@/components/LocationFilter.vue";
+import SearchInput from "@/components/SearchInput.vue";
 
 export default {
   name: "MainSection",
   components: {
+    ContentLoader,
+    CountryCard,
     LocationFilter,
     SearchInput,
-    CountryCard,
-    ContentLoader,
   },
   data() {
     return {
@@ -60,38 +60,10 @@ export default {
     };
   },
   async created() {
-    try {
-      const response = await fetch(this.url);
-
-      if (!response.ok) {
-        throw new Error("There was not possible get information about the countries.");
-      }
-
-      this.countries = await response.json();
-
-      const allPromises = this.countries.map((country) =>
-        this.getDominantImageColor(country.flags.png),
-      );
-
-      this.countriesColors = await Promise.all(allPromises);
-      this.countriesAndColorsReady = true;
-    } catch ({ error, message }) {
-      alert(`${error}: ${message}`);
-    }
-  },
-  methods: {
-    async getDominantImageColor(imageUrl) {
-      return new Promise((resolve, reject) => {
-        const colorThief = new ColorThief();
-        const image = new Image();
-
-        image.src = imageUrl;
-        image.crossOrigin = "Anonymous";
-
-        image.onload = () => resolve(colorThief.getColor(image));
-        image.oneeror = () => reject();
-      });
-    },
+    const { countries, countriesColors } = await getCountries(this.url);
+    this.countries = countries;
+    this.countriesColors = countriesColors;
+    this.countriesAndColorsReady = true;
   },
 };
 </script>

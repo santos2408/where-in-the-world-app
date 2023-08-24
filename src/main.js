@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { createApp } from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -9,7 +9,7 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faMoon, faMagnifyingGlass, faSun, faAngleDown);
 
-import '@/index.css';
-import App from '@/App.vue';
+import "@/index.css";
+import App from "@/App.vue";
 
-createApp(App).component("font-awesome-icon", FontAwesomeIcon).mount('#app');
+createApp(App).component("font-awesome-icon", FontAwesomeIcon).mount("#app");
