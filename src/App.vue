@@ -1,19 +1,18 @@
 <template class="text-2xl">
   <the-header />
-  <main-section />
+  <router-view />
+  <the-footer />
 </template>
 
 <script>
 import TheHeader from "@/components/TheHeader.vue";
-import MainSection from "@/components/MainSection.vue";
+import TheFooter from "@/components/TheFooter.vue";
 
 export default {
   name: "App",
   components: {
     TheHeader,
-    MainSection,
+    TheFooter,
   },
 };
 </script>
-
-<style scoped></style>

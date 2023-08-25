@@ -1,6 +1,6 @@
 <template>
   <main
-    class="min-h-screen w-full bg-brand-white-2 px-6 pt-32 transition ease-in dark:bg-brand-dark-2 md:px-20"
+    class="mt-20 min-h-screen w-full bg-brand-white-2 px-6 pt-12 transition ease-in dark:bg-brand-dark-2 md:px-20"
   >
     <section
       class="mb-12 flex flex-col items-center justify-between gap-5 md:flex-row md:gap-6 lg:gap-0"
@@ -9,16 +9,26 @@
       <location-filter />
     </section>
 
-    <section
-      v-if="countriesAndColorsReady"
-      class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-    >
-      <country-card
-        v-for="(country, index) in countries"
-        :key="country.name.common"
-        :country="country"
-        :country-color="countriesColors[index]"
-      />
+    <section v-if="countriesAndColorsReady">
+      <p class="mb-3 text-sm text-brand-black-1 dark:text-brand-gray-2">
+        {{ countries.length }} countries
+      </p>
+
+      <div
+        class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+      >
+        <country-card
+          v-for="(country, index) in displayedCountry"
+          :key="country.name.common"
+          :country="country"
+          :country-color="displayedCountryColors[index]"
+        />
+      </div>
+
+      <div class="flex justify-end gap-6 py-10">
+        <button>Previous</button>
+        <button>Next</button>
+      </div>
     </section>
 
     <section
@@ -58,6 +68,23 @@ export default {
       countriesColors: [],
       countriesAndColorsReady: false,
     };
+  },
+  computed: {
+    getCountriesIntervalIndex() {
+      const currentPageString = this.$route.query.page || 1;
+      const currentPageNumber = Number.parseInt(currentPageString);
+      const firstCountryIndex = (currentPageNumber - 1) * 20;
+      const lastCountryIndex = currentPageNumber * 20;
+      return { firstCountryIndex, lastCountryIndex };
+    },
+    displayedCountry() {
+      const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
+      return this.countries.slice(firstCountryIndex, lastCountryIndex);
+    },
+    displayedCountryColors() {
+      const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
+      return this.countriesColors.slice(firstCountryIndex, lastCountryIndex);
+    },
   },
   async created() {
     const { countries, countriesColors } = await getCountries(this.url);

@@ -3,7 +3,7 @@
     class="lef-0 fixed top-0 z-20 flex h-20 w-full items-center justify-between bg-brand-white-1 px-6 shadow-dark-1 transition ease-in dark:bg-brand-dark-1 md:px-20"
   >
     <h1 class="text-2xl font-bold text-brand-black-1 dark:text-brand-white-1">
-      Where in the world?
+      <router-link :to="{ name: 'Home' }"> Where in the world? </router-link>
     </h1>
     <button
       class="flex items-center gap-3 py-3 font-semibold text-brand-black-1 dark:text-brand-white-1"
