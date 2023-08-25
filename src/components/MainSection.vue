@@ -1,6 +1,6 @@
 <template>
   <main
-    class="mt-20 min-h-screen w-full bg-brand-white-2 px-6 pt-12 transition ease-in dark:bg-brand-dark-2 md:px-20"
+    class="mt-20 min-h-screen w-full bg-brand-white-2 px-6 pt-12 ease-in dark:bg-brand-dark-2 md:px-20"
   >
     <section
       class="mb-12 flex flex-col items-center justify-between gap-5 md:flex-row md:gap-6 lg:gap-0"
@@ -10,9 +10,28 @@
     </section>
 
     <section v-if="countriesAndColorsReady">
-      <p class="mb-3 text-sm text-brand-black-1 dark:text-brand-gray-2">
-        {{ countries.length }} countries
-      </p>
+      <div class="mb-6 flex items-end justify-between">
+        <p class="text-sm text-brand-black-1 dark:text-brand-gray-2">
+          {{ countries.length }} countries
+        </p>
+
+        <div class="flex gap-6">
+          <router-link
+            v-if="previousPage"
+            :to="{ name: 'Home', query: { page: previousPage } }"
+            class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+          >
+            Previous
+          </router-link>
+          <router-link
+            v-if="nextPage"
+            :to="{ name: 'Home', query: { page: nextPage } }"
+            class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+          >
+            Next
+          </router-link>
+        </div>
+      </div>
 
       <div
         class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
@@ -26,8 +45,20 @@
       </div>
 
       <div class="flex justify-end gap-6 py-10">
-        <button>Previous</button>
-        <button>Next</button>
+        <router-link
+          v-if="previousPage"
+          :to="{ name: 'Home', query: { page: previousPage } }"
+          class="w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+        >
+          Previous
+        </router-link>
+        <router-link
+          v-if="nextPage"
+          :to="{ name: 'Home', query: { page: nextPage } }"
+          class="w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+        >
+          Next
+        </router-link>
       </div>
     </section>
 
@@ -63,7 +94,6 @@ export default {
   },
   data() {
     return {
-      url: "https://restcountries.com/v3.1/all",
       countries: [],
       countriesColors: [],
       countriesAndColorsReady: false,
@@ -85,9 +115,21 @@ export default {
       const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
       return this.countriesColors.slice(firstCountryIndex, lastCountryIndex);
     },
+    currentPage() {
+      return Number.parseInt(this.$route.query.page || 1);
+    },
+    nextPage() {
+      const nextPage = this.currentPage + 1;
+      const maxPage = this.countries.length / 20;
+      return nextPage < maxPage ? nextPage : undefined;
+    },
+    previousPage() {
+      const previousPage = this.currentPage - 1;
+      return previousPage >= 1 ? previousPage : undefined;
+    },
   },
   async created() {
-    const { countries, countriesColors } = await getCountries(this.url);
+    const { countries, countriesColors } = await getCountries();
     this.countries = countries;
     this.countriesColors = countriesColors;
     this.countriesAndColorsReady = true;

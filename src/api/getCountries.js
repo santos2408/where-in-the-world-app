@@ -1,7 +1,9 @@
 import ColorThief from "/node_modules/colorthief/dist/color-thief.mjs";
 import getDominantImageColor from "@/utils/getDominantImageColor.js";
 
-const fetchCountries = async (url) => {
+const url = "https://restcountries.com/v3.1/all";
+
+const fetchCountries = async () => {
   try {
     const response = await fetch(url);
 
