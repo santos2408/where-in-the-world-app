@@ -19,12 +19,16 @@ const getCountries = async () => {
         .localeCompare(secondCountry.name.common.toLowerCase());
     });
 
-    const promises = alphabeticalOrderedCountries.map(({ flags }) =>
+    const countriesColorsPromises = alphabeticalOrderedCountries.map(({ flags }) =>
       getDominantImageColor(flags.png, colorThief),
     );
-    const countriesColors = await Promise.all(promises);
+    const countriesColors = await Promise.all(countriesColorsPromises);
 
-    return { countries: alphabeticalOrderedCountries, countriesColors };
+    const formattedCountries = alphabeticalOrderedCountries.map((country, index) => {
+      return { ...country, flagColor: countriesColors[index] };
+    });
+
+    return formattedCountries;
   } catch ({ error, message }) {
     alert(`${error}: ${message}`);
   }

@@ -6,20 +6,28 @@
     <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
     <input
       id="search-country"
-      v-model="inputValue"
+      v-model="value"
       type="text"
       class="h-full w-full bg-transparent outline-none transition ease-in"
       placeholder="Search for a country..."
+      @input="handleInput"
     />
   </label>
 </template>
 <script>
 export default {
   name: "SearchInput",
+  emits: ["handle-input"],
   data() {
     return {
-      inputValue: "",
+      value: "",
     };
+  },
+  methods: {
+    handleInput($event) {
+      this.value = $event.target.value;
+      this.$emit("handle-input", this.value);
+    },
   },
 };
 </script>

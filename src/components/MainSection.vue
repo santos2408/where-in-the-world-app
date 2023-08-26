@@ -5,14 +5,14 @@
     <section
       class="mb-12 flex flex-col items-center justify-between gap-5 md:flex-row md:gap-6 lg:gap-0"
     >
-      <search-input />
+      <search-input @handle-input="updateSearch" />
       <location-filter />
     </section>
 
     <section v-if="countriesAndColorsReady">
       <div class="mb-6 flex items-end justify-between">
         <p class="text-sm text-brand-black-1 dark:text-brand-gray-2">
-          {{ countries.length }} countries
+          {{ FILTERED_COUNTRIES.length }} countries
         </p>
 
         <div class="flex gap-6">
@@ -37,10 +37,10 @@
         class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
       >
         <country-card
-          v-for="(country, index) in displayedCountry"
+          v-for="country in displayedCountry"
           :key="country.name.common"
           :country="country"
-          :country-color="displayedCountryColors[index]"
+          :country-color="country.flagColor"
         />
       </div>
 
@@ -86,7 +86,12 @@
 <script>
 import { mapState, mapActions } from "pinia";
 
-import { useCountriesStore, FETCH_JOBS } from "@/stores/countries";
+import {
+  useCountriesStore,
+  FETCH_COUNTRIES,
+  FILTERED_COUNTRIES,
+  FILTER_COUNTRIES_BY_SEARCH,
+} from "@/stores/countries";
 import { useUserStore } from "@/stores/user";
 
 import { ContentLoader } from "vue-content-loader";
@@ -102,6 +107,12 @@ export default {
     LocationFilter,
     SearchInput,
   },
+  data() {
+    return {
+      searchValue: "",
+      countriesAndColorsReady: false,
+    };
+  },
   computed: {
     getCountriesIntervalIndex() {
       const currentPageString = this.$route.query.page || 1;
@@ -115,33 +126,32 @@ export default {
     },
     ...mapState(useUserStore, ["darkMode"]),
     ...mapState(useCountriesStore, {
-      countries: "countries",
-      countriesColors: "countriesColors",
-      countriesAndColorsReady: "countriesAndColorsReady",
+      FILTERED_COUNTRIES,
       displayedCountry() {
         const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
-        return this.countries.slice(firstCountryIndex, lastCountryIndex);
+        return this.FILTERED_COUNTRIES.slice(firstCountryIndex, lastCountryIndex);
       },
-      displayedCountryColors() {
-        const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
-        return this.countriesColors.slice(firstCountryIndex, lastCountryIndex);
+      nextPage() {
+        const nextPage = this.currentPage + 1;
+        const maxPage = this.FILTERED_COUNTRIES.length / 20;
+        return nextPage < maxPage ? nextPage : undefined;
       },
     }),
-    nextPage() {
-      const nextPage = this.currentPage + 1;
-      const maxPage = this.countries.length / 20;
-      return nextPage < maxPage ? nextPage : undefined;
-    },
     previousPage() {
       const previousPage = this.currentPage - 1;
       return previousPage >= 1 ? previousPage : undefined;
     },
   },
   async created() {
-    this.FETCH_JOBS();
+    await this.FETCH_COUNTRIES();
+    this.countriesAndColorsReady = true;
   },
   methods: {
-    ...mapActions(useCountriesStore, [FETCH_JOBS]),
+    ...mapActions(useCountriesStore, [FETCH_COUNTRIES, FILTER_COUNTRIES_BY_SEARCH]),
+    updateSearch(payload) {
+      this.$router.push({ name: "Home", query: { page: 1 } });
+      this.FILTER_COUNTRIES_BY_SEARCH(payload);
+    },
   },
 };
 </script>
