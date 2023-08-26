@@ -17,35 +17,31 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "pinia";
+
+import { useUserStore } from "@/stores/user";
+
 export default {
   name: "TheHeader",
   data() {
     return {
       isMobile: null,
-      theme: null,
     };
   },
   computed: {
-    currentTheme() {
-      return this.theme ? "Light Mode" : "Dark Mode";
-    },
+    ...mapState(useUserStore, {
+      theme: "darkMode",
+      currentTheme() {
+        return this.theme ? "Light Mode" : "Dark Mode";
+      },
+    }),
     handleThemeNameVisibility() {
       return this.isMobile ? "" : this.currentTheme;
     },
   },
 
   created() {
-    const themeFromLocalStorage = localStorage.getItem("darkMode");
-    const currentTheme = JSON.parse(themeFromLocalStorage);
-
-    this.theme = currentTheme;
-
-    if (currentTheme) {
-      document.documentElement.classList.add("dark");
-      return;
-    }
-
-    document.documentElement.classList.remove("dark");
+    this.getCurrentTheme();
   },
 
   mounted() {
@@ -57,11 +53,7 @@ export default {
   },
 
   methods: {
-    changeTheme() {
-      this.theme = !this.theme;
-      localStorage.setItem("darkMode", JSON.stringify(this.theme));
-      document.documentElement.classList.toggle("dark");
-    },
+    ...mapActions(useUserStore, ["changeTheme", "getCurrentTheme"]),
   },
 };
 </script>
