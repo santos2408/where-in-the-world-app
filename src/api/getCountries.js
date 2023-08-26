@@ -13,10 +13,18 @@ const getCountries = async () => {
 
     const colorThief = new ColorThief();
     const countries = await response.json();
-    const promises = countries.map(({ flags }) => getDominantImageColor(flags.png, colorThief));
+    const alphabeticalOrderedCountries = countries.sort((firstCountry, secondCountry) => {
+      return firstCountry.name.common
+        .toLowerCase()
+        .localeCompare(secondCountry.name.common.toLowerCase());
+    });
+
+    const promises = alphabeticalOrderedCountries.map(({ flags }) =>
+      getDominantImageColor(flags.png, colorThief),
+    );
     const countriesColors = await Promise.all(promises);
 
-    return { countries, countriesColors };
+    return { countries: alphabeticalOrderedCountries, countriesColors };
   } catch ({ error, message }) {
     alert(`${error}: ${message}`);
   }
