@@ -3,7 +3,7 @@ import getDominantImageColor from "@/utils/getDominantImageColor.js";
 
 const url = "https://restcountries.com/v3.1/all";
 
-const fetchCountries = async () => {
+const getCountries = async () => {
   try {
     const response = await fetch(url);
 
@@ -22,4 +22,4 @@ const fetchCountries = async () => {
   }
 };
 
-export default fetchCountries;
+export default getCountries;
