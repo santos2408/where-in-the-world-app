@@ -6,6 +6,7 @@
     <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
     <input
       id="search-country"
+      v-model="inputValue"
       type="text"
       class="h-full w-full bg-transparent outline-none transition ease-in"
       placeholder="Search for a country..."
@@ -15,5 +16,10 @@
 <script>
 export default {
   name: "SearchInput",
+  data() {
+    return {
+      inputValue: "",
+    };
+  },
 };
 </script>

@@ -66,7 +66,14 @@
       v-else
       class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
     >
-      <content-loader v-for="n in 10" :key="n" viewBox="0 0 200 285" :speed="2">
+      <content-loader
+        v-for="n in 10"
+        :key="n"
+        viewBox="0 0 200 285"
+        :speed="2"
+        :primary-color="darkMode ? '#334450' : '#EBEBEB'"
+        :secondary-color="darkMode ? '#364956' : '#DEDEDE'"
+      >
         <rect x="0" y="3" rx="10" ry="10" width="195" height="140" />
         <rect x="5" y="160" rx="0" ry="0" width="180" height="15" />
         <rect x="5" y="185" rx="0" ry="0" width="154" height="15" />
@@ -77,7 +84,10 @@
 </template>
 
 <script>
-import getCountries from "@/api/getCountries.js";
+import { mapState, mapActions } from "pinia";
+
+import { useCountriesStore, FETCH_JOBS } from "@/stores/countries";
+import { useUserStore } from "@/stores/user";
 
 import { ContentLoader } from "vue-content-loader";
 import CountryCard from "@/components/CountryCard.vue";
@@ -92,13 +102,6 @@ export default {
     LocationFilter,
     SearchInput,
   },
-  data() {
-    return {
-      countries: [],
-      countriesColors: [],
-      countriesAndColorsReady: false,
-    };
-  },
   computed: {
     getCountriesIntervalIndex() {
       const currentPageString = this.$route.query.page || 1;
@@ -107,17 +110,23 @@ export default {
       const lastCountryIndex = currentPageNumber * 20;
       return { firstCountryIndex, lastCountryIndex };
     },
-    displayedCountry() {
-      const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
-      return this.countries.slice(firstCountryIndex, lastCountryIndex);
-    },
-    displayedCountryColors() {
-      const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
-      return this.countriesColors.slice(firstCountryIndex, lastCountryIndex);
-    },
     currentPage() {
       return Number.parseInt(this.$route.query.page || 1);
     },
+    ...mapState(useUserStore, ["darkMode"]),
+    ...mapState(useCountriesStore, {
+      countries: "countries",
+      countriesColors: "countriesColors",
+      countriesAndColorsReady: "countriesAndColorsReady",
+      displayedCountry() {
+        const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
+        return this.countries.slice(firstCountryIndex, lastCountryIndex);
+      },
+      displayedCountryColors() {
+        const { firstCountryIndex, lastCountryIndex } = this.getCountriesIntervalIndex;
+        return this.countriesColors.slice(firstCountryIndex, lastCountryIndex);
+      },
+    }),
     nextPage() {
       const nextPage = this.currentPage + 1;
       const maxPage = this.countries.length / 20;
@@ -129,10 +138,10 @@ export default {
     },
   },
   async created() {
-    const { countries, countriesColors } = await getCountries();
-    this.countries = countries;
-    this.countriesColors = countriesColors;
-    this.countriesAndColorsReady = true;
+    this.FETCH_JOBS();
+  },
+  methods: {
+    ...mapActions(useCountriesStore, [FETCH_JOBS]),
   },
 };
 </script>
