@@ -5,12 +5,12 @@
     <section
       class="mb-12 flex flex-col items-center justify-between gap-5 md:flex-row md:gap-6 lg:gap-0"
     >
-      <search-input @handle-input="updateSearch" />
+      <search-input />
       <location-filter />
     </section>
 
     <section v-if="countriesAndColorsReady">
-      <div class="mb-6 flex items-end justify-between">
+      <div class="mb-6 flex h-12 items-end justify-between">
         <p class="text-sm text-brand-black-1 dark:text-brand-gray-2">
           {{ FILTERED_COUNTRIES.length }} countries
         </p>
@@ -86,12 +86,7 @@
 <script>
 import { mapState, mapActions } from "pinia";
 
-import {
-  useCountriesStore,
-  FETCH_COUNTRIES,
-  FILTERED_COUNTRIES,
-  FILTER_COUNTRIES_BY_SEARCH,
-} from "@/stores/countries";
+import { useCountriesStore, FETCH_COUNTRIES, FILTERED_COUNTRIES } from "@/stores/countries";
 import { useUserStore } from "@/stores/user";
 
 import { ContentLoader } from "vue-content-loader";
@@ -124,7 +119,7 @@ export default {
     currentPage() {
       return Number.parseInt(this.$route.query.page || 1);
     },
-    ...mapState(useUserStore, ["darkMode"]),
+    ...mapState(useUserStore, ["darkMode", "searchedCountry", "searchedRegion"]),
     ...mapState(useCountriesStore, {
       FILTERED_COUNTRIES,
       displayedCountry() {
@@ -147,11 +142,7 @@ export default {
     this.countriesAndColorsReady = true;
   },
   methods: {
-    ...mapActions(useCountriesStore, [FETCH_COUNTRIES, FILTER_COUNTRIES_BY_SEARCH]),
-    updateSearch(payload) {
-      this.$router.push({ name: "Home", query: { page: 1 } });
-      this.FILTER_COUNTRIES_BY_SEARCH(payload);
-    },
+    ...mapActions(useCountriesStore, [FETCH_COUNTRIES]),
   },
 };
 </script>

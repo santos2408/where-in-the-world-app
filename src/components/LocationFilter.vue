@@ -28,6 +28,10 @@
 </template>
 
 <script>
+import { mapActions } from "pinia";
+
+import { useUserStore, ADD_SEARCHED_REGION } from "@/stores/user";
+
 export default {
   name: "LocationFilter",
   data() {
@@ -38,12 +42,15 @@ export default {
     };
   },
   methods: {
+    ...mapActions(useUserStore, [ADD_SEARCHED_REGION]),
     handleFilterRegionsVisibility() {
       this.filterRegionsVisibility = !this.filterRegionsVisibility;
     },
     chooseRegion($event) {
       this.selectedRegion = $event.target.textContent;
       this.filterRegionsVisibility = !this.filterRegionsVisibility;
+      this.$router.push({ name: "Home", query: { page: 1 } });
+      this.ADD_SEARCHED_REGION(this.selectedRegion);
     },
   },
 };

@@ -15,6 +15,10 @@
   </label>
 </template>
 <script>
+import { mapActions } from "pinia";
+
+import { useUserStore, ADD_SEARCHED_COUNTRY } from "@/stores/user";
+
 export default {
   name: "SearchInput",
   emits: ["handle-input"],
@@ -24,9 +28,11 @@ export default {
     };
   },
   methods: {
+    ...mapActions(useUserStore, [ADD_SEARCHED_COUNTRY]),
     handleInput($event) {
       this.value = $event.target.value;
-      this.$emit("handle-input", this.value);
+      this.$router.push({ name: "Home", query: { page: 1 } });
+      this.ADD_SEARCHED_COUNTRY(this.value);
     },
   },
 };

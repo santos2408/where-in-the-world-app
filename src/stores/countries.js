@@ -2,32 +2,52 @@ import { defineStore } from "pinia";
 
 import getCountries from "@/api/getCountries.js";
 
+import { useUserStore } from "@/stores/user";
+
 export const FETCH_COUNTRIES = "FETCH_COUNTRIES";
 export const FILTERED_COUNTRIES = "FILTERED_COUNTRIES";
-export const FILTER_COUNTRIES_BY_SEARCH = "FILTER_COUNTRIES_BY_SEARCH";
+export const INCLUDE_SEARCH_COUNTRY_NAME = "INCLUDE_SEARCH_COUNTRY_NAME";
+export const INCLUDE_SEARCH_COUNTRY_REGION = "INCLUDE_SEARCH_COUNTRY_REGION";
 
 export const useCountriesStore = defineStore("countries", {
   state: () => {
     return {
       countries: [],
-      filteredCountries: [],
-      // countriesAndColorsReady: false,
       filter: "all", // all, africa, america, asia, europe, oceania
     };
   },
   getters: {
-    [FILTER_COUNTRIES_BY_SEARCH]: (state) => (searchedCountry) => {
-      const filteredCountries = state.countries.filter((country) =>
-        country.name.common.toLowerCase().includes(searchedCountry),
-      );
-      state.filteredCountries = filteredCountries;
-    },
-    [FILTERED_COUNTRIES](state) {
-      if (state.filteredCountries.length !== 0) {
-        return this.filteredCountries;
+    [INCLUDE_SEARCH_COUNTRY_NAME]: () => (country) => {
+      const userStore = useUserStore();
+
+      if (userStore.searchedCountry.length === 0) {
+        return true;
       }
 
-      return state.countries;
+      return country.name.common.toLowerCase().includes(userStore.searchedCountry.toLowerCase());
+    },
+    [INCLUDE_SEARCH_COUNTRY_REGION]: () => (country) => {
+      const userStore = useUserStore();
+
+      if (userStore.searchedRegion.length === 0 || userStore.searchedRegion === "All") {
+        return true;
+      }
+
+      return country.region.toLowerCase().includes(userStore.searchedRegion.toLowerCase());
+    },
+    [FILTERED_COUNTRIES](state) {
+      const userStore = useUserStore();
+
+      const noFilteredCountryByName = userStore.searchedCountry.length === 0;
+      const noFilteredCountryByRegion = userStore.searchedRegion.length === 0;
+
+      if (noFilteredCountryByName && noFilteredCountryByRegion) {
+        return state.countries;
+      }
+
+      return state.countries
+        .filter((country) => this.INCLUDE_SEARCH_COUNTRY_NAME(country))
+        .filter((country) => this.INCLUDE_SEARCH_COUNTRY_REGION(country));
     },
   },
   actions: {
