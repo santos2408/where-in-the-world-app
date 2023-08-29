@@ -1,6 +1,6 @@
 <template>
   <main
-    class="mt-20 min-h-screen w-full bg-brand-white-2 px-6 pt-12 ease-in dark:bg-brand-dark-2 md:px-20"
+    class="mt-20 min-h-screen w-full bg-brand-blue-1 px-6 pt-12 ease-in dark:bg-brand-dark-2 md:px-20"
   >
     <section
       class="mb-12 flex flex-col items-center justify-between gap-5 md:flex-row md:gap-6 lg:gap-0"
@@ -17,16 +17,16 @@
 
         <div class="flex gap-6">
           <router-link
-            v-if="previousPage"
             :to="{ name: 'Home', query: { page: previousPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+            :class="disablePreviousButton"
           >
             Previous
           </router-link>
           <router-link
-            v-if="nextPage"
             :to="{ name: 'Home', query: { page: nextPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+            :class="disableNextButton"
           >
             Next
           </router-link>
@@ -46,16 +46,16 @@
 
       <div class="flex justify-end gap-6 py-10">
         <router-link
-          v-if="previousPage"
           :to="{ name: 'Home', query: { page: previousPage } }"
           class="w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+          :class="disablePreviousButton"
         >
           Previous
         </router-link>
         <router-link
-          v-if="nextPage"
           :to="{ name: 'Home', query: { page: nextPage } }"
           class="w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+          :class="disableNextButton"
         >
           Next
         </router-link>
@@ -135,6 +135,16 @@ export default {
     previousPage() {
       const previousPage = this.currentPage - 1;
       return previousPage >= 1 ? previousPage : undefined;
+    },
+    disablePreviousButton() {
+      return this.previousPage
+        ? undefined
+        : "bg-brand-gray-2 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none";
+    },
+    disableNextButton() {
+      return this.nextPage
+        ? undefined
+        : "bg-brand-gray-2 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none";
     },
   },
   async created() {
