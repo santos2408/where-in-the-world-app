@@ -128,8 +128,9 @@ export default {
       },
       nextPage() {
         const nextPage = this.currentPage + 1;
-        const maxPage = this.FILTERED_COUNTRIES.length / 20;
-        return nextPage < maxPage ? nextPage : undefined;
+        const maxPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
+        console.log(nextPage, maxPage, nextPage < maxPage ? nextPage : undefined);
+        return nextPage <= maxPage ? nextPage : undefined;
       },
     }),
     previousPage() {
