@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import MainSection from "@/components/MainSection.vue";
+import MainSection from "@/components/Main/MainSection.vue";
 
 export default {
   name: "HomeView",

@@ -1,7 +1,10 @@
 import { defineStore } from "pinia";
 
+export const HANDLE_CURRENT_THEME = "HANDLE_CURRENT_THEME";
+export const CHANGE_THEME = "CHANGE_THEME";
 export const ADD_SEARCHED_COUNTRY = "ADD_SEARCHED_COUNTRY";
 export const ADD_SEARCHED_REGION = "ADD_SEARCHED_REGION";
+export const RESET_SEARCHED_COUNTRY = "RESET_SEARCHED_COUNTRY";
 
 export const useUserStore = defineStore("user", {
   state: () => {
@@ -11,21 +14,26 @@ export const useUserStore = defineStore("user", {
       darkMode: false,
     };
   },
-  getters: {},
+  getters: {
+    getSearchedCountry(state) {
+      return state.searchedCountry;
+    },
+  },
   actions: {
-    getCurrentTheme() {
+    [HANDLE_CURRENT_THEME]() {
       const themeFromLocalStorage = localStorage.getItem("darkMode");
-      const currentTheme = JSON.parse(themeFromLocalStorage);
-      this.darkMode = currentTheme;
+      const isDarkModeTheme = JSON.parse(themeFromLocalStorage);
 
-      if (currentTheme) {
+      this.darkMode = isDarkModeTheme;
+
+      if (isDarkModeTheme) {
         document.documentElement.classList.add("dark");
         return;
       }
 
       document.documentElement.classList.remove("dark");
     },
-    changeTheme() {
+    [CHANGE_THEME]() {
       this.darkMode = !this.darkMode;
       localStorage.setItem("darkMode", JSON.stringify(this.darkMode));
       document.documentElement.classList.toggle("dark");
@@ -35,6 +43,9 @@ export const useUserStore = defineStore("user", {
     },
     [ADD_SEARCHED_REGION](searchedRegion) {
       this.searchedRegion = searchedRegion;
+    },
+    [RESET_SEARCHED_COUNTRY]() {
+      this.searchedCountry = "";
     },
   },
 });

@@ -7,7 +7,7 @@
     </h1>
     <button
       class="flex items-center gap-3 py-3 font-semibold text-brand-black-1 dark:text-brand-white-1"
-      @click="changeTheme"
+      @click="CHANGE_THEME"
     >
       <font-awesome-icon v-if="theme" :icon="['fas', 'sun']" />
       <font-awesome-icon v-else :icon="['fas', 'moon']" />
@@ -19,7 +19,7 @@
 <script>
 import { mapState, mapActions } from "pinia";
 
-import { useUserStore } from "@/stores/user";
+import { useUserStore, HANDLE_CURRENT_THEME, CHANGE_THEME } from "@/stores/user";
 
 export default {
   name: "TheHeader",
@@ -39,23 +39,17 @@ export default {
       return this.isMobile ? "" : this.currentTheme;
     },
   },
-
   created() {
-    this.getCurrentTheme();
+    this.HANDLE_CURRENT_THEME();
   },
-
   mounted() {
     this.isMobile = window.innerWidth <= 600 ? true : false;
-
     window.addEventListener("resize", () => {
       this.isMobile = window.innerWidth <= 600 ? true : false;
     });
   },
-
   methods: {
-    ...mapActions(useUserStore, ["changeTheme", "getCurrentTheme"]),
+    ...mapActions(useUserStore, [CHANGE_THEME, HANDLE_CURRENT_THEME]),
   },
 };
 </script>
-
-<style scoped></style>

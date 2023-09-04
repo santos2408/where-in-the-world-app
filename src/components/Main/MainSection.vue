@@ -10,12 +10,44 @@
     </section>
 
     <section v-if="countriesAndColorsReady">
-      <div class="mb-6 flex h-12 items-end justify-between">
-        <p class="text-sm text-brand-black-1 dark:text-brand-gray-2">
-          {{ FILTERED_COUNTRIES.length }} countries
-        </p>
+      <countries-not-found v-if="countriesNotFound" />
 
-        <div class="flex gap-6">
+      <div v-else>
+        <div class="mb-6 flex h-12 items-end justify-between">
+          <p class="text-sm text-brand-black-1 dark:text-brand-gray-2">
+            {{ FILTERED_COUNTRIES.length }} countries
+          </p>
+
+          <div class="flex gap-6">
+            <router-link
+              :to="{ name: 'Home', query: { page: previousPage } }"
+              class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+              :class="disablePreviousButton"
+            >
+              Previous
+            </router-link>
+            <router-link
+              :to="{ name: 'Home', query: { page: nextPage } }"
+              class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
+              :class="disableNextButton"
+            >
+              Next
+            </router-link>
+          </div>
+        </div>
+
+        <div
+          class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+        >
+          <country-card
+            v-for="country in displayedCountry"
+            :key="country.name.common"
+            :country="country"
+            :country-color="country.flagColor"
+          />
+        </div>
+
+        <div class="flex justify-end gap-6 py-10">
           <router-link
             :to="{ name: 'Home', query: { page: previousPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
@@ -32,34 +64,6 @@
           </router-link>
         </div>
       </div>
-
-      <div
-        class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-      >
-        <country-card
-          v-for="country in displayedCountry"
-          :key="country.name.common"
-          :country="country"
-          :country-color="country.flagColor"
-        />
-      </div>
-
-      <div class="flex justify-end gap-6 py-10">
-        <router-link
-          :to="{ name: 'Home', query: { page: previousPage } }"
-          class="w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
-          :class="disablePreviousButton"
-        >
-          Previous
-        </router-link>
-        <router-link
-          :to="{ name: 'Home', query: { page: nextPage } }"
-          class="w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
-          :class="disableNextButton"
-        >
-          Next
-        </router-link>
-      </div>
     </section>
 
     <section
@@ -67,12 +71,12 @@
       class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
     >
       <content-loader
-        v-for="n in 10"
+        v-for="n in 20"
         :key="n"
         viewBox="0 0 200 285"
         :speed="2"
-        :primary-color="darkMode ? '#334450' : '#EBEBEB'"
-        :secondary-color="darkMode ? '#364956' : '#DEDEDE'"
+        :primary-color="darkMode ? '#334450' : '#BED4F3'"
+        :secondary-color="darkMode ? '#364956' : '#D9E8FF'"
       >
         <rect x="0" y="3" rx="10" ry="10" width="195" height="140" />
         <rect x="5" y="160" rx="0" ry="0" width="180" height="15" />
@@ -90,15 +94,17 @@ import { useCountriesStore, FETCH_COUNTRIES, FILTERED_COUNTRIES } from "@/stores
 import { useUserStore } from "@/stores/user";
 
 import { ContentLoader } from "vue-content-loader";
-import CountryCard from "@/components/CountryCard.vue";
-import LocationFilter from "@/components/LocationFilter.vue";
-import SearchInput from "@/components/SearchInput.vue";
+import CountryCard from "@/components/Main/CountryCard.vue";
+import CountriesNotFound from "@/components/Main/CountriesNotFound.vue";
+import LocationFilter from "@/components/Hero/LocationFilter.vue";
+import SearchInput from "@/components/Hero/SearchInput.vue";
 
 export default {
   name: "MainSection",
   components: {
     ContentLoader,
     CountryCard,
+    CountriesNotFound,
     LocationFilter,
     SearchInput,
   },
@@ -129,23 +135,26 @@ export default {
       nextPage() {
         const nextPage = this.currentPage + 1;
         const maxPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
-        console.log(nextPage, maxPage, nextPage < maxPage ? nextPage : undefined);
-        return nextPage <= maxPage ? nextPage : undefined;
+        return nextPage <= maxPage ? nextPage : this.currentPage;
       },
     }),
     previousPage() {
       const previousPage = this.currentPage - 1;
-      return previousPage >= 1 ? previousPage : undefined;
+      return previousPage >= 1 ? previousPage : this.currentPage;
     },
     disablePreviousButton() {
-      return this.previousPage
-        ? undefined
-        : "bg-brand-gray-2 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none";
+      return this.currentPage === 1
+        ? "bg-[#c9d4e3] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none"
+        : undefined;
     },
     disableNextButton() {
-      return this.nextPage
-        ? undefined
-        : "bg-brand-gray-2 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none";
+      const lastPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
+      return this.currentPage === lastPage
+        ? "bg-[#c9d4e3] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none"
+        : undefined;
+    },
+    countriesNotFound() {
+      return this.FILTERED_COUNTRIES.length === 0 ? true : false;
     },
   },
   async created() {

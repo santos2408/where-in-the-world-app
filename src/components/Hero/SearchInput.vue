@@ -6,33 +6,31 @@
     <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
     <input
       id="search-country"
-      v-model="value"
+      :value="getSearchedCountry"
       type="text"
       class="h-full w-full bg-transparent outline-none transition ease-in"
       placeholder="Search for a country..."
+      autocomplete="off"
       @input="handleInput"
     />
   </label>
 </template>
 <script>
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 
 import { useUserStore, ADD_SEARCHED_COUNTRY } from "@/stores/user";
 
 export default {
   name: "SearchInput",
   emits: ["handle-input"],
-  data() {
-    return {
-      value: "",
-    };
+  computed: {
+    ...mapState(useUserStore, ["getSearchedCountry"]),
   },
   methods: {
     ...mapActions(useUserStore, [ADD_SEARCHED_COUNTRY]),
     handleInput($event) {
-      this.value = $event.target.value;
       this.$router.push({ name: "Home", query: { page: 1 } });
-      this.ADD_SEARCHED_COUNTRY(this.value);
+      this.ADD_SEARCHED_COUNTRY($event.target.value);
     },
   },
 };

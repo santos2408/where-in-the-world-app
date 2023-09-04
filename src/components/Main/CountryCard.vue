@@ -1,6 +1,8 @@
 <template>
-  <div
+  <router-link
+    :to="countryPageLink"
     class="cursor-pointer overflow-hidden rounded bg-white shadow-dark-2 transition hover:-translate-y-1"
+    @click="showCountry"
   >
     <figure class="flex h-60 items-center justify-center p-6" :style="backgroundStyleCountry">
       <img
@@ -17,7 +19,7 @@
         <li><span class="font-semibold">Capital</span>: {{ formattedCountryCapital }}</li>
       </ul>
     </div>
-  </div>
+  </router-link>
 </template>
 <script>
 export default {
@@ -41,6 +43,10 @@ export default {
     },
     formattedPopulation() {
       return new Intl.NumberFormat("en-US").format(this.country.population);
+    },
+    countryPageLink() {
+      console.log(`/country/${this.country.cca3}`);
+      return `/country/${this.country.cca3}`;
     },
   },
 };
