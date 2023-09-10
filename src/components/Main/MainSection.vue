@@ -137,6 +137,15 @@ export default {
         const maxPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
         return nextPage <= maxPage ? nextPage : this.currentPage;
       },
+      disableNextButton() {
+        const lastPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
+        return this.currentPage === lastPage
+          ? "bg-[#DBE6F5] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#263849] dark:hover:bg-[#25313D] pointer-events-none"
+          : undefined;
+      },
+      countriesNotFound() {
+        return this.FILTERED_COUNTRIES.length === 0 ? true : false;
+      },
     }),
     previousPage() {
       const previousPage = this.currentPage - 1;
@@ -144,17 +153,8 @@ export default {
     },
     disablePreviousButton() {
       return this.currentPage === 1
-        ? "bg-[#c9d4e3] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none"
+        ? "bg-[#DBE6F5] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#263849] dark:hover:bg-[#25313D] pointer-events-none"
         : undefined;
-    },
-    disableNextButton() {
-      const lastPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
-      return this.currentPage === lastPage
-        ? "bg-[#c9d4e3] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#25313D] dark:hover:bg-[#25313D] pointer-events-none"
-        : undefined;
-    },
-    countriesNotFound() {
-      return this.FILTERED_COUNTRIES.length === 0 ? true : false;
     },
   },
   async created() {

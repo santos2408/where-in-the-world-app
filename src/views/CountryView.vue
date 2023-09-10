@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <h1>Individual country page</h1>
-  </div>
+  <the-country />
 </template>
 
 <script>
+import TheCountry from "@/components/Main/TheCountry.vue";
+
 export default {
   name: "CountryView",
+  components: {
+    TheCountry,
+  },
 };
 </script>

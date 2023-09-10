@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import getCountries from "@/api/getCountries.js";
+import { getCountries } from "@/api/getCountries.js";
 
 import { useUserStore } from "@/stores/user";
 
@@ -51,9 +51,8 @@ export const useCountriesStore = defineStore("countries", {
     },
   },
   actions: {
-    async [FETCH_COUNTRIES]() {
-      const countries = await getCountries();
-      this.countries = countries;
+    async [FETCH_COUNTRIES](param) {
+      this.countries = await getCountries(param);
     },
   },
 });
