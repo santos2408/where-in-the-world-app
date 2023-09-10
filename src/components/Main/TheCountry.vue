@@ -77,12 +77,12 @@
             </li>
           </ul>
           <div>
-            <h2 class="mb-2 font-bold dark:text-brand-gray-3">Border Countries:</h2>
+            <h2 class="mb-2 font-bold dark:text-brand-white-1">Border Countries:</h2>
             <div v-if="borderCountries.length" class="flex flex-wrap gap-3">
               <router-link
                 v-for="borderCountry in borderCountries"
                 :key="borderCountry.cca3"
-                :to="{ name: 'CountryView' }"
+                :to="`/country/${borderCountry.cca3}`"
                 class="inline-block rounded bg-brand-white-1 px-8 py-2 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
               >
                 {{ borderCountry.name.common }}
@@ -166,10 +166,21 @@ export default {
       return languages ? Object.values(this.country.languages).join(", ") : "Unkown";
     },
   },
+  watch: {
+    async $route() {
+      this.countriesAndColorsReady = false;
+      this.getData();
+    },
+  },
   async created() {
-    this.country = await getCountry(this.$route.params.id);
-    this.borderCountries = await getBorderCountries(this.country.borders);
-    this.countriesAndColorsReady = true;
+    this.getData();
+  },
+  methods: {
+    async getData() {
+      this.country = await getCountry(this.$route.params.id);
+      this.borderCountries = await getBorderCountries(this.country.borders);
+      this.countriesAndColorsReady = true;
+    },
   },
 };
 </script>
