@@ -54,15 +54,16 @@ const getCountry = async (param) => {
   }
 };
 
-const getBorderCountries = async (borders) => {
-  const countries = await getCountries();
+const getBorderCountries = async (borderCountries) => {
+  let allPromises = [];
 
-  if (borders) {
-    const borderCountries = countries.filter((country) => borders.includes(country.cca3));
-    return borderCountries;
-  }
+  borderCountries.forEach(async (borderCountry) => allPromises.push(getCountry(borderCountry)));
 
-  return [];
+  const promises = await Promise.allSettled(allPromises);
+  const fulfilledPromises = promises.filter((promise) => promise.status === "fulfilled");
+  const countries = fulfilledPromises.map((fulfilledPromise) => fulfilledPromise.value);
+
+  return countries;
 };
 
 export { getCountries, getCountry, getBorderCountries };

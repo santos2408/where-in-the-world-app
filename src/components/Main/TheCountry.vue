@@ -178,6 +178,11 @@ export default {
   methods: {
     async getData() {
       this.country = await getCountry(this.$route.params.id);
+
+      if (!this.country.borders) {
+        return;
+      }
+
       this.borderCountries = await getBorderCountries(this.country.borders);
       this.countriesAndColorsReady = true;
     },
