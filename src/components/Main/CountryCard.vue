@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     formattedCountryCapital() {
-      return this.country.capital ? this.country.capital[0] : "Unkown";
+      return this.country.capital ? this.country.capital[0] : "---";
     },
     backgroundStyleCountry() {
       return { backgroundColor: `rgb(${this.countryColor.join(",")}, 0.5)` };

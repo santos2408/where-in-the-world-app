@@ -24,55 +24,55 @@
         </div>
         <div class="flex flex-col gap-10">
           <h1 class="text-3xl font-bold dark:text-brand-white-1">
-            {{ country.name.common || "Unkown" }}
+            {{ country.name.common || "---" }}
           </h1>
           <ul class="flex h-48 flex-col flex-wrap gap-4">
             <li class="font-medium dark:text-brand-white-1">
               Native Name:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ getNativeName || "Unkown" }}
+                {{ getNativeName || "---" }}
               </span>
             </li>
             <li class="font-medium dark:text-brand-white-1">
               Population:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ formattedPopulation || "Unkown" }}
+                {{ formattedPopulation || "---" }}
               </span>
             </li>
             <li class="font-medium dark:text-brand-white-1">
               Region:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ country.region || "Unkown" }}
+                {{ country.region || "---" }}
               </span>
             </li>
             <li class="font-medium dark:text-brand-white-1">
               Sub Region:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ country.subregion || "Unkown" }}
+                {{ country.subregion || "---" }}
               </span>
             </li>
             <li class="font-medium dark:text-brand-white-1">
               Capital:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ country.capital ? country.capital[0] : "Unkown" }}
+                {{ country.capital ? country.capital[0] : "---" }}
               </span>
             </li>
             <li class="font-medium dark:text-brand-white-1">
               Top Level Domains:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ country.tld ? country.tld[0] : "Unkown" }}
+                {{ country.tld ? country.tld[0] : "---" }}
               </span>
             </li>
             <li class="font-medium dark:text-brand-white-1">
               Currencies:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ formattedCurrencies || "Unkown" }}
+                {{ formattedCurrencies || "---" }}
               </span>
             </li>
             <li class="font-medium dark:text-brand-white-1">
               Languages:
               <span class="font-normal dark:text-brand-gray-3">
-                {{ formattedLanguages || "Unkown" }}
+                {{ formattedLanguages || "---" }}
               </span>
             </li>
           </ul>
@@ -159,11 +159,11 @@ export default {
           .join(", ");
       }
 
-      return hasCurrencies ? formattedCurrencies : "Unkown";
+      return hasCurrencies ? formattedCurrencies : "---";
     },
     formattedLanguages() {
       const languages = this.country.languages;
-      return languages ? Object.values(this.country.languages).join(", ") : "Unkown";
+      return languages ? Object.values(this.country.languages).join(", ") : "---";
     },
   },
   watch: {
@@ -179,11 +179,12 @@ export default {
     async getData() {
       this.country = await getCountry(this.$route.params.id);
 
-      if (!this.country.borders) {
+      if (this.country.borders) {
+        this.borderCountries = await getBorderCountries(this.country.borders);
+        this.countriesAndColorsReady = true;
         return;
       }
 
-      this.borderCountries = await getBorderCountries(this.country.borders);
       this.countriesAndColorsReady = true;
     },
   },
