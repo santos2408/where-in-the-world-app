@@ -22,16 +22,16 @@
 
           <div class="order-1 flex gap-6 md:order-2">
             <router-link
+              v-if="previousPage"
               :to="{ name: 'Home', query: { page: previousPage } }"
               class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
-              :class="disablePreviousButton"
             >
               Previous
             </router-link>
             <router-link
+              v-if="nextPage"
               :to="{ name: 'Home', query: { page: nextPage } }"
               class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
-              :class="disableNextButton"
             >
               Next
             </router-link>
@@ -53,14 +53,12 @@
           <router-link
             :to="{ name: 'Home', query: { page: previousPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
-            :class="disablePreviousButton"
           >
             Previous
           </router-link>
           <router-link
             :to="{ name: 'Home', query: { page: nextPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
-            :class="disableNextButton"
           >
             Next
           </router-link>
@@ -138,13 +136,7 @@ export default {
       nextPage() {
         const nextPage = this.currentPage + 1;
         const maxPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
-        return nextPage <= maxPage ? nextPage : this.currentPage;
-      },
-      disableNextButton() {
-        const lastPage = Math.ceil(this.FILTERED_COUNTRIES.length / 20);
-        return this.currentPage === lastPage
-          ? "bg-[#DBE6F5] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#263849] dark:hover:bg-[#25313D] pointer-events-none"
-          : undefined;
+        return nextPage <= maxPage ? nextPage : undefined;
       },
       countriesNotFound() {
         return this.FILTERED_COUNTRIES.length === 0 ? true : false;
@@ -152,12 +144,7 @@ export default {
     }),
     previousPage() {
       const previousPage = this.currentPage - 1;
-      return previousPage >= 1 ? previousPage : this.currentPage;
-    },
-    disablePreviousButton() {
-      return this.currentPage === 1
-        ? "bg-[#DBE6F5] text-brand-gray-1 hover:bg-brand-gray-2 dark:bg-[#263849] dark:hover:bg-[#25313D] pointer-events-none"
-        : undefined;
+      return previousPage >= 1 ? previousPage : undefined;
     },
   },
   async created() {
