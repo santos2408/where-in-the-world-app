@@ -14,13 +14,13 @@
 
       <div v-else>
         <div
-          class="mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:items-end md:justify-between"
+          class="flex flex-col items-center justify-center gap-4 md:flex-row md:items-end md:justify-between"
         >
           <p class="order-2 text-sm text-brand-black-1 dark:text-brand-gray-2 md:order-1">
             {{ FILTERED_COUNTRIES.length }} countries
           </p>
 
-          <div class="order-1 flex gap-6 md:order-2">
+          <div v-if="showPagination" class="order-1 flex gap-6 md:order-2">
             <router-link
               v-if="previousPage"
               :to="{ name: 'Home', query: { page: previousPage } }"
@@ -39,7 +39,7 @@
         </div>
 
         <div
-          class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+          class="grid grid-cols-1 gap-16 py-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
         >
           <country-card
             v-for="country in displayedCountry"
@@ -49,7 +49,7 @@
           />
         </div>
 
-        <div class="flex justify-end gap-6 py-10">
+        <div v-if="showPagination" class="flex justify-end gap-6 pb-10">
           <router-link
             :to="{ name: 'Home', query: { page: previousPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
@@ -140,6 +140,10 @@ export default {
       },
       countriesNotFound() {
         return this.FILTERED_COUNTRIES.length === 0 ? true : false;
+      },
+      showPagination() {
+        const totalCountries = this.FILTERED_COUNTRIES.length;
+        return totalCountries <= 20 ? false : true;
       },
     }),
     previousPage() {
