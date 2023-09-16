@@ -1,35 +1,52 @@
-# .
+<h1 align="center">
+  Where in the world?
+</h1>
 
-This template ashould help get you started developing with Vue 3 in Vite.
+<p align="center">
+  <img alt="" src="./public/banner.png" width="100%">
+</p>
 
-## Recommended IDE Setup
+<p align="center">
+  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="https://rogersanttos-where-in-the-world.netlify.app/">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-licença">Licença</a>
+</p>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<!-- <p align="center">
+  <img  src="https://img.shields.io/static/v1?label=license&message=MIT&color=5454D4&labelColor=3B3B89" alt="License">
 
-## Customize configuration
+  <img src="https://img.shields.io/github/forks/santos2408/digital-agency-website?color=5454D4&label=Forks" alt="Forks">
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+  <img src="https://img.shields.io/github/stars/santos2408/digital-agency-website?color=5454D4&label=Stars" alt="Stars">
+</p> -->
 
-## Project Setup
+<br>
 
-```sh
-npm install
-```
+## 🚀 Tecnologias
 
-### Compile and Hot-Reload for Development
+Esse projeto está sendo desenvolvido com as seguintes tecnologias:
 
-```sh
-npm run dev
-```
+- Vue.JS
+- Pinia
+- Vue Router
+- Tailwind CSS
 
-### Compile and Minify for Production
+## 🚧 Projeto:
 
-```sh
-npm run build
-```
+Link do Projeto: [Where in the world?](https://rogersanttos-where-in-the-world.netlify.app/)
 
-### Lint with [ESLint](https://eslint.org/)
+<!-- <p>:heavy_check_mark: Mobile</p>
+<p>:construction: Desktop</p> -->
 
-```sh
-npm run lint
-```
+<!-- ## 🎨 Inspiração:
+
+Comunidade: [Codelândia](https://discord.gg/DvpRxMWW) -->
+
+## :memo: Licença
+
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](./.github/LICENSE) para mais detalhes.
+
+---
+
+Desenvolvido por Roger Santos <br>
+Design de [Frontend Mentor](https://www.frontendmentor.io/challenges/rest-countries-api-with-color-theme-switcher-5cacc469fec04111f7b848ca)
