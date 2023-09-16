@@ -27,56 +27,60 @@
           <h1 class="text-3xl font-bold dark:text-brand-white-1">
             {{ country.name.common || "---" }}
           </h1>
-          <ul class="flex flex-col flex-wrap gap-4 xl:h-48">
-            <li class="font-medium dark:text-brand-white-1">
-              Native Name:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ getNativeName || "---" }}
-              </span>
-            </li>
-            <li class="font-medium dark:text-brand-white-1">
-              Population:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ formattedPopulation || "---" }}
-              </span>
-            </li>
-            <li class="font-medium dark:text-brand-white-1">
-              Region:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ country.region || "---" }}
-              </span>
-            </li>
-            <li class="font-medium dark:text-brand-white-1">
-              Sub Region:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ country.subregion || "---" }}
-              </span>
-            </li>
-            <li class="font-medium dark:text-brand-white-1">
-              Capital:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ country.capital ? country.capital[0] : "---" }}
-              </span>
-            </li>
-            <li class="font-medium dark:text-brand-white-1">
-              Top Level Domains:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ country.tld ? country.tld[0] : "---" }}
-              </span>
-            </li>
-            <li class="font-medium dark:text-brand-white-1">
-              Currencies:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ formattedCurrencies || "---" }}
-              </span>
-            </li>
-            <li class="font-medium dark:text-brand-white-1">
-              Languages:
-              <span class="font-normal dark:text-brand-gray-3">
-                {{ formattedLanguages || "---" }}
-              </span>
-            </li>
-          </ul>
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
+            <ul class="flex flex-col gap-4">
+              <li class="font-medium dark:text-brand-white-1">
+                Native Name:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ getNativeName || "---" }}
+                </span>
+              </li>
+              <li class="font-medium dark:text-brand-white-1">
+                Population:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ formattedPopulation || "---" }}
+                </span>
+              </li>
+              <li class="font-medium dark:text-brand-white-1">
+                Region:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ country.region || "---" }}
+                </span>
+              </li>
+              <li class="font-medium dark:text-brand-white-1">
+                Sub Region:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ country.subregion || "---" }}
+                </span>
+              </li>
+              <li class="font-medium dark:text-brand-white-1">
+                Capital:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ country.capital ? country.capital[0] : "---" }}
+                </span>
+              </li>
+            </ul>
+            <ul class="flex flex-col gap-4">
+              <li class="font-medium dark:text-brand-white-1">
+                Top Level Domains:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ country.tld ? country.tld[0] : "---" }}
+                </span>
+              </li>
+              <li class="font-medium dark:text-brand-white-1">
+                Currencies:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ formattedCurrencies || "---" }}
+                </span>
+              </li>
+              <li class="font-medium dark:text-brand-white-1">
+                Languages:
+                <span class="font-normal dark:text-brand-gray-3">
+                  {{ formattedLanguages || "---" }}
+                </span>
+              </li>
+            </ul>
+          </div>
           <div class="mb-8 lg:mb-0">
             <h2 class="mb-2 font-bold dark:text-brand-white-1">Border Countries:</h2>
             <div v-if="borderCountries.length" class="flex flex-wrap gap-3">
