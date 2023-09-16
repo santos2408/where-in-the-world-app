@@ -6,8 +6,9 @@
       <router-link
         :to="{ name: 'Home' }"
         class="mb-20 inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
-        >Back</router-link
       >
+        Back
+      </router-link>
 
       <div class="grid grid-cols-1 items-center gap-8 md:gap-16 lg:grid-cols-2">
         <div class="rounded bg-white">

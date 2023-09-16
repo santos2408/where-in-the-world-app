@@ -51,12 +51,14 @@
 
         <div v-if="showPagination" class="flex justify-end gap-6 pb-10">
           <router-link
+            v-if="previousPage"
             :to="{ name: 'Home', query: { page: previousPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
           >
             Previous
           </router-link>
           <router-link
+            v-if="nextPage"
             :to="{ name: 'Home', query: { page: nextPage } }"
             class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
           >
