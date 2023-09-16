@@ -13,12 +13,14 @@
       <countries-not-found v-if="countriesNotFound" />
 
       <div v-else>
-        <div class="mb-6 flex h-12 items-end justify-between">
-          <p class="text-sm text-brand-black-1 dark:text-brand-gray-2">
+        <div
+          class="mb-6 flex flex-col items-center justify-center gap-4 md:flex-row md:items-end md:justify-between"
+        >
+          <p class="order-2 text-sm text-brand-black-1 dark:text-brand-gray-2 md:order-1">
             {{ FILTERED_COUNTRIES.length }} countries
           </p>
 
-          <div class="flex gap-6">
+          <div class="order-1 flex gap-6 md:order-2">
             <router-link
               :to="{ name: 'Home', query: { page: previousPage } }"
               class="inline-block w-36 rounded bg-brand-white-1 py-3 text-center text-brand-gray-1 shadow-dark-2 hover:bg-brand-gray-2 dark:bg-brand-dark-1 dark:text-brand-white-1 dark:hover:bg-brand-dark-3"
@@ -112,6 +114,7 @@ export default {
     return {
       searchValue: "",
       countriesAndColorsReady: false,
+      playgroundValue: "",
     };
   },
   computed: {

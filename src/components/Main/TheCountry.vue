@@ -9,14 +9,14 @@
         >Back</router-link
       >
 
-      <div class="grid grid-cols-2 items-center gap-16">
+      <div class="grid grid-cols-1 items-center gap-8 md:gap-16 lg:grid-cols-2">
         <div class="rounded bg-white">
           <figure
-            class="flex h-120 items-center justify-center rounded p-6"
+            class="flex items-center justify-center rounded p-6 md:h-120"
             :style="backgroundStyleCountry"
           >
             <img
-              class="max-h-96 border-2 border-white object-cover drop-shadow-lg backdrop-blur"
+              class="border-2 border-white object-cover drop-shadow-lg backdrop-blur md:max-h-96"
               :src="country.flags.svg"
               :alt="country.name.common"
             />
@@ -26,7 +26,7 @@
           <h1 class="text-3xl font-bold dark:text-brand-white-1">
             {{ country.name.common || "---" }}
           </h1>
-          <ul class="flex h-48 flex-col flex-wrap gap-4">
+          <ul class="flex flex-col flex-wrap gap-4 xl:h-48">
             <li class="font-medium dark:text-brand-white-1">
               Native Name:
               <span class="font-normal dark:text-brand-gray-3">
@@ -76,7 +76,7 @@
               </span>
             </li>
           </ul>
-          <div>
+          <div class="mb-8 lg:mb-0">
             <h2 class="mb-2 font-bold dark:text-brand-white-1">Border Countries:</h2>
             <div v-if="borderCountries.length" class="flex flex-wrap gap-3">
               <router-link
